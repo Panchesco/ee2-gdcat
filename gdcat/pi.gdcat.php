@@ -45,7 +45,7 @@
 
 	$plugin_info = array(
 	    'pi_name'         => 'Good Cat',
-	    'pi_version'      => '1.0',
+	    'pi_version'      => '1.1.0',
 	    'pi_author'       => 'Richard Whitmer/Godat Design, Inc.',
 	    'pi_author_url'   => 'http://godatdesign.com/',
 	    'pi_description'  => '
@@ -228,9 +228,112 @@
 				return $this->category->cat_desciption;
 			}
 			
+			
+			
 			// ------------------------------------------------------------------------
-			 
+			
 
+			/**
+			 * Return data about a category and its parent categories
+			 */
+			 public function line()
+			 {
+				 $data = array();
+				 
+				 function cat($group_id,$cat_url_title)
+				 {
+					 return ee()->db
+					 					->where('group_id',$group_id)
+					 					->where('cat_url_title',$cat_url_title)
+					 					->limit(1)
+					 					->get('categories');
+				 }
+				 
+				 $sort = ee()->TMPL->fetch_param('sort','desc');
+				 $cat_url_title = ee()->TMPL->fetch_param('cat_url_title',0);
+				 $group_id = ee()->TMPL->fetch_param('group_id',0);
+				 
+				 $query = cat($group_id,$cat_url_title);
+				 
+				 while($query->num_rows()!==0)
+				 {
+				 
+				 		$data[] = $query->row_array();
+				
+				 		$query = ee()->db->where('cat_id',$query->row()->parent_id)
+				 						->limit(1)
+				 						->get('categories');
+				 
+				 }
+				 
+				 if(strtolower($sort)=='desc')
+				 {
+				 	$data = array_reverse($data);
+				 }
+				 
+				 if( count($data) != 0)
+				 {
+					 		
+					 		return ee()->TMPL->parse_variables(ee()->TMPL->tagdata, $data);
+				 
+				 	} else {
+					 
+					 		return ee()->TMPL->no_results();
+				 }
+				 
+			 }
+			
+			// ------------------------------------------------------------------------
+
+			/**
+			 *	Return the parent id for a given category_id
+			 *  @param $id integer
+			 *	@return object
+			 */
+			private function parent_id($id)
+			{
+										$query = ee()->db
+												->select('*')
+												->where('parent_id',$id)
+												->limit(1)
+												->get('categories');
+												
+										if($query->num_rows()==1)
+										{
+											return $query->row();
+										} else {
+											return FALSE;
+										}
+				
+			}
+			 
+			// ------------------------------------------------------------------------
+			
+			/**
+			 *	Return the db row for a given category_id
+			 *	@param $group_id integer
+			 *  @param $cat_url_title string
+			 *	@return object
+			 */
+			private function category($group_id=0,$cat_url_title='')
+			{
+										$query = ee()->db
+												->where('group_id',$group_id)
+												->where('cat_url_title',$cat_url_title)
+												->limit(1)
+												->get('categories');
+												
+										if($query->num_rows()==1)
+										{
+											return $query->row();
+										} else {
+											return FALSE;
+										}
+				
+			}
+			 
+			// ------------------------------------------------------------------------
+			
 			/**
 			 *	Return plugin usage documentation.
 			 *	@return string
@@ -240,7 +343,7 @@
 				
 					ob_start();  ?>
 					 
-					TAGS:
+					SINGLE TAGS:
 					----------------------------------------------------------------------------
 					{exp:gdcat:group_id [parameters]} 
 					{exp:gdcat:url_title [parameters]}
@@ -261,6 +364,26 @@
 					cat_name
 					cat_url_title
 					
+					
+					TAGS PAIRS:
+					----------------------------------------------------------------------------
+					{exp:gdcat:line group_id="1" cat_url_title="category-url-title"}
+						{cat_id}
+            {site_id
+            {group_id}
+            {parent_id}
+            {cat_name}
+            {cat_url_title}
+            {cat_description}
+            {cat_image}
+            {cat_order}
+					{/exp:gdcat:line}
+					
+					
+					CHANGE LOG:
+					----------------------------------------------------------------------------
+					1.1.0 - Added {exp:gdcat:line} variable pair for showing parent categories 
+						for a category based on its group_id and category_url_title
 
 					<?php
 					 $buffer = ob_get_contents();
