@@ -46,7 +46,7 @@ cat_url_title
 ```
 
 
-###Change Log:
+###Change Log
 
 1.1.0 - Added {exp:gdcat:line} variable pair for showing parent categories 
 	for a category based on its group_id and category_url_title
