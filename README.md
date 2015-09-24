@@ -33,15 +33,15 @@ cat_url_title
 ----------------------------------------------------------------------------
 ```
 {exp:gdcat:line group_id="1" cat_url_title="category-url-title"}
-	{cat_id}
-  {site_id
-  {group_id}
-  {parent_id}
-  {cat_name}
-  {cat_url_title}
-  {cat_description}
-  {cat_image}
-  {cat_order}
+ {cat_id}
+ {site_id
+ {group_id}
+ {parent_id}
+ {cat_name}
+ {cat_url_title}
+ {cat_description}
+ {cat_image}
+ {cat_order}
 {/exp:gdcat:line}
 ```
 
