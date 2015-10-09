@@ -26,6 +26,9 @@ group_id
 cat_id
 cat_name
 cat_url_title
+
+br_desc  // yes/no - Apply nl2br to cat_description? 
+image_man  // Image manipulation to output with cat_image.
 ```
 
 
@@ -37,7 +40,7 @@ cat_url_title
 Display category
 
 ```
-{exp:gdcat:line group_id="1" cat_url_title="category-url-title"}
+{exp:gdcat:line group_id="1" cat_url_title="category-url-title" image_man="thumbs"}
  {cat_id}
  {site_id
  {group_id}
@@ -71,6 +74,10 @@ Display category as parent-child heirarchy
 
 ###Change Log
 
+
+1.3.0
+ - Added file directory URL parsing for cat_image
+ 
 1.2.0
  - Added {exp:gdcat:category} variable pair for displaying parsed category info.
  - Added br_desc parameter for applying nl2br to cat_description

@@ -45,7 +45,7 @@
 
 	$plugin_info = array(
 	    'pi_name'         => 'Good Cat',
-	    'pi_version'      => '1.2.0',
+	    'pi_version'      => '1.3.0',
 	    'pi_author'       => 'Richard Whitmer/Godat Design, Inc.',
 	    'pi_author_url'   => 'http://godatdesign.com/',
 	    'pi_description'  => '
@@ -66,6 +66,7 @@
 			public $group_id		= FALSE;
 			public $category;
 			public $br_desc			= 'yes';
+			public $image_man			= '';
 		
 			public function __construct()
 			{
@@ -91,6 +92,8 @@
 				}
 				
 				$this->br_desc	= strtolower(ee()->TMPL->fetch_param('br_desc','yes'));
+				
+				$this->image_man	= strtolower(ee()->TMPL->fetch_param('image_man',''));
 
 				$this->find_category();
 				
@@ -140,6 +143,13 @@
 					 if($this->br_desc == 'yes')
 					 {
 					 	$this->category->cat_description = nl2br($this->category->cat_description);
+					 }
+					 
+					 
+					 // Get the image file url
+					 if($this->category->cat_image)
+					 {
+						 $this->category->cat_image = $this->fileurl($this->category->cat_image);
 					 }
 					 
 					 
@@ -357,6 +367,41 @@
 			// ------------------------------------------------------------------------
 			
 			/**
+				* Adapted from: https://devot-ee.com/add-ons/parse-filedirectories
+				* Parse a file field directory 
+				* @param string
+				* @return string
+				*/
+				private function fileurl($url)
+				{
+							$file_dir = '';
+							$file_name = '';
+
+							// Figure out what the full URL should be
+							if (preg_match('/{filedir_([0-9]+)}/', $url, $matches))
+							{
+								$file_dir = $matches[1];
+								$file_name = str_replace($matches[0], '', $url);
+								
+								$query = ee()->db->select('url')
+												->from('upload_prefs')
+												->where('id',$file_dir)
+												->get();
+
+										// Output the full URL
+										if( $this->image_man != '')
+										{
+											return $query->row('url'). '_' . $this->image_man . '/' . $file_name;
+										} else {
+											return $query->row('url').$file_name;
+										}
+							}
+
+				}
+				
+			// ------------------------------------------------------------------------	
+			
+			/**
 			 *	Return plugin usage documentation.
 			 *	@return string
 			 */
@@ -387,10 +432,25 @@
 					cat_url_title
 
 					br_desc - yes/no - Apply nl2br to cat_description? 
+					image_man - Image manipulation to output with cat_image.
+					
 					
 					
 					TAGS PAIRS:
 					----------------------------------------------------------------------------
+					{exp:gdcat:category group_id="1" cat_url_title="category-url-title" image_man="thumbs"}
+						{cat_id}
+            {site_id}
+            {group_id}
+            {parent_id}
+            {cat_name}
+            {cat_url_title}
+            {cat_description}
+            {cat_image}
+            {cat_order}
+					{/exp:gdcat:line}
+					
+
 					{exp:gdcat:line group_id="1" cat_url_title="category-url-title"}
 						{cat_id}
             {site_id}
