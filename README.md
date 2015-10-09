@@ -48,5 +48,8 @@ cat_url_title
 
 ###Change Log
 
+1.1.1 - Bug fix - cat() function in :line tag was being called recursively and throwing error. 
+Now using private category() method instead.
+
 1.1.0 - Added {exp:gdcat:line} variable pair for showing parent categories 
-	for a category based on its group_id and category_url_title
+for a category based on its group_id and category_url_title

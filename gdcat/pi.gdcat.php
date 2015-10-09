@@ -45,7 +45,7 @@
 
 	$plugin_info = array(
 	    'pi_name'         => 'Good Cat',
-	    'pi_version'      => '1.1.0',
+	    'pi_version'      => '1.1.1',
 	    'pi_author'       => 'Richard Whitmer/Godat Design, Inc.',
 	    'pi_author_url'   => 'http://godatdesign.com/',
 	    'pi_description'  => '
@@ -240,22 +240,13 @@
 			 {
 				 $data = array();
 				 
-				 function cat($group_id,$cat_url_title)
-				 {
-					 return ee()->db
-					 					->where('group_id',$group_id)
-					 					->where('cat_url_title',$cat_url_title)
-					 					->limit(1)
-					 					->get('categories');
-				 }
-				 
 				 $sort = ee()->TMPL->fetch_param('sort','desc');
 				 $cat_url_title = ee()->TMPL->fetch_param('cat_url_title',0);
 				 $group_id = ee()->TMPL->fetch_param('group_id',0);
 				 
-				 $query = cat($group_id,$cat_url_title);
+				 $query = $this->category($group_id,$cat_url_title);
 				 
-				 while($query->num_rows()!==0)
+				 while($query !== FALSE && $query->num_rows()!==0)
 				 {
 				 
 				 		$data[] = $query->row_array();
@@ -325,7 +316,7 @@
 												
 										if($query->num_rows()==1)
 										{
-											return $query->row();
+											return $query;
 										} else {
 											return FALSE;
 										}
@@ -369,7 +360,7 @@
 					----------------------------------------------------------------------------
 					{exp:gdcat:line group_id="1" cat_url_title="category-url-title"}
 						{cat_id}
-            {site_id
+            {site_id}
             {group_id}
             {parent_id}
             {cat_name}
@@ -378,12 +369,6 @@
             {cat_image}
             {cat_order}
 					{/exp:gdcat:line}
-					
-					
-					CHANGE LOG:
-					----------------------------------------------------------------------------
-					1.1.0 - Added {exp:gdcat:line} variable pair for showing parent categories 
-						for a category based on its group_id and category_url_title
 
 					<?php
 					 $buffer = ob_get_contents();
