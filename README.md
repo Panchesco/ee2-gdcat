@@ -48,6 +48,10 @@ cat_url_title
 
 ###Change Log
 
+1.2.0
+ - Added {exp:gdcat:category} variable pair for displaying parsed category info.
+ - Added br_desc parameter for applying nl2br to cat_description
+
 1.1.1 - Bug fix - cat() function in :line tag was being called recursively and throwing error. 
 Now using private category() method instead.
 

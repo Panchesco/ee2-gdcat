@@ -45,7 +45,7 @@
 
 	$plugin_info = array(
 	    'pi_name'         => 'Good Cat',
-	    'pi_version'      => '1.1.1',
+	    'pi_version'      => '1.2.0',
 	    'pi_author'       => 'Richard Whitmer/Godat Design, Inc.',
 	    'pi_author_url'   => 'http://godatdesign.com/',
 	    'pi_description'  => '
@@ -65,6 +65,7 @@
 			public $cat_url_title	= FALSE;
 			public $group_id		= FALSE;
 			public $category;
+			public $br_desc			= 'yes';
 		
 			public function __construct()
 			{
@@ -89,6 +90,8 @@
 				    $this->cat_url_title	= ee()->TMPL->fetch_param('cat_url_title');
 				}
 				
+				$this->br_desc	= strtolower(ee()->TMPL->fetch_param('br_desc','yes'));
+
 				$this->find_category();
 				
 			}
@@ -134,6 +137,12 @@
 				 {
 					 $this->category = $query->row();
 					 
+					 if($this->br_desc == 'yes')
+					 {
+					 	$this->category->cat_description = nl2br($this->category->cat_description);
+					 }
+					 
+					 
 				 } else {
 					 
 					 $this->category				= new stdClass();
@@ -141,7 +150,7 @@
 					 $this->category->cat_id		= '';
 					 $this->category->cat_name		= '';
 					 $this->category->cat_url_title	= '';
-					 $this->category->description	= '';
+					 $this->category->cat_description	= '';
 					 $this->category->cat_image		= '';
 					 $this->category->cat_order		= '';
 					 
@@ -149,6 +158,28 @@
 		 			
 			 }
 			 
+			 // ------------------------------------------------------------------------
+			 
+			 			 
+			 /**
+				 * Returned category db row parsed for template.
+				 */
+				 public function category()
+				 {
+					 if($this->category->cat_id !== '')
+					 {
+						 
+						 foreach($this->category as $key=>$row)
+						 {
+								$data[$key] = $row;
+						 }
+						 
+						 return ee()->TMPL->parse_variables(ee()->TMPL->tagdata,array($data));
+					 } else {
+						 return ee()->TMPL->no_results();
+					 }
+				 }
+				 
 			 // ------------------------------------------------------------------------
 			 
 			 
@@ -244,7 +275,7 @@
 				 $cat_url_title = ee()->TMPL->fetch_param('cat_url_title',0);
 				 $group_id = ee()->TMPL->fetch_param('group_id',0);
 				 
-				 $query = $this->category($group_id,$cat_url_title);
+				 $query = $this->category_line($group_id,$cat_url_title);
 				 
 				 while($query !== FALSE && $query->num_rows()!==0)
 				 {
@@ -306,7 +337,7 @@
 			 *  @param $cat_url_title string
 			 *	@return object
 			 */
-			private function category($group_id=0,$cat_url_title='')
+			private function category_line($group_id=0,$cat_url_title='')
 			{
 										$query = ee()->db
 												->where('group_id',$group_id)
@@ -354,6 +385,8 @@
 					cat_id
 					cat_name
 					cat_url_title
+
+					br_desc - yes/no - Apply nl2br to cat_description? 
 					
 					
 					TAGS PAIRS:
