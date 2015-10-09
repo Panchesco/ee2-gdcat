@@ -1,4 +1,4 @@
-ee2-gdcat
+#gdcat
 =========
 
 Use one or more properties of a category to easily find other properties and make them available in templates independent of the native exp:channel:category tag pair.
@@ -31,6 +31,29 @@ cat_url_title
 
 ##Tag Pairs:
 ----------------------------------------------------------------------------
+
+### exp:gdcat:category
+
+Display category
+
+```
+{exp:gdcat:line group_id="1" cat_url_title="category-url-title"}
+ {cat_id}
+ {site_id
+ {group_id}
+ {parent_id}
+ {cat_name}
+ {cat_url_title}
+ {cat_description}
+ {cat_image}
+ {cat_order}
+{/exp:gdcat:line}
+```
+
+### exp:gdcat:line
+
+Display category as parent-child heirarchy
+
 ```
 {exp:gdcat:line group_id="1" cat_url_title="category-url-title"}
  {cat_id}
