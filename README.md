@@ -15,7 +15,7 @@ Use one or more properties of a category to easily find other properties and mak
 {exp:gdcat:order [parameters]}
 ```
 
-##Single Parameters
+##Parameters
 All are optional, but query will return
 the first result it finds meeting the criteria set in the parameters, 
 so whenever possible using the group_id and either the cat_id or 
