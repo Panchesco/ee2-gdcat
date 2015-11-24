@@ -138,13 +138,23 @@
 				 			
 				 if($query->num_rows()==1)
 				 {
-					 $this->category = $query->row();
+					 $row = $query->row();
+					 
+					  // "cat_" style names
+					 $this->category = $row;
 					 
 					 if($this->br_desc == 'yes')
 					 {
 					 	$this->category->cat_description = nl2br($this->category->cat_description);
 					 }
 					 
+					 // ee channel category vars
+					 
+					 $this->category->category_id = $row->cat_id;
+					 $this->category->category_name = $row->cat_name;
+					 $this->category->category_url_title = $row->cat_url_title;
+					 $this->category->category_description = $row->cat_description;
+					 $this->category->category_image = $row->cat_image;
 					 
 					 // Get the image file url
 					 if($this->category->cat_image)
