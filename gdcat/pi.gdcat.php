@@ -45,9 +45,9 @@
 
 	$plugin_info = array(
 	    'pi_name'         => 'Good Cat',
-	    'pi_version'      => '1.3.0',
+	    'pi_version'      => '1.4.0',
 	    'pi_author'       => 'Richard Whitmer/Godat Design, Inc.',
-	    'pi_author_url'   => 'http://godatdesign.com/',
+	    'pi_author_url'   => 'https://github.com/Panchesco/gdcat',
 	    'pi_description'  => '
 	    Use one or more properties of a category to easily find other properties
 	    and make them available in templates as a single tag, independent
@@ -154,12 +154,12 @@
 					 $this->category->category_name = $row->cat_name;
 					 $this->category->category_url_title = $row->cat_url_title;
 					 $this->category->category_description = $row->cat_description;
-					 $this->category->category_image = $row->cat_image;
+					 $this->category->category_image = $this->fileurl($row->cat_image);;
 					 
 					 // Get the image file url
 					 if($this->category->cat_image)
 					 {
-						 $this->category->cat_image = $this->fileurl($this->category->cat_image);
+						 $this->category->cat_image = $this->fileurl($row->cat_image);
 					 }
 					 
 					 
@@ -440,7 +440,6 @@
 					cat_id
 					cat_name
 					cat_url_title
-
 					br_desc - yes/no - Apply nl2br to cat_description? 
 					image_man - Image manipulation to output with cat_image.
 					
@@ -449,28 +448,40 @@
 					TAGS PAIRS:
 					----------------------------------------------------------------------------
 					{exp:gdcat:category group_id="1" cat_url_title="category-url-title" image_man="thumbs"}
-						{cat_id}
-            {site_id}
-            {group_id}
-            {parent_id}
-            {cat_name}
-            {cat_url_title}
-            {cat_description}
-            {cat_image}
-            {cat_order}
+						 {cat_id}
+						 {category_id}
+						 {site_id
+						 {group_id}
+						 {parent_id}
+						 {cat_name}
+						 {category_name}
+						 {cat_url_title}
+						 {category_url_title}
+						 {cat_description}
+						 {category_description}
+						 {cat_image}
+						 {category_image}
+						 {cat_order}
+						 {category_order}
 					{/exp:gdcat:line}
 					
 
 					{exp:gdcat:line group_id="1" cat_url_title="category-url-title"}
-						{cat_id}
-            {site_id}
-            {group_id}
-            {parent_id}
-            {cat_name}
-            {cat_url_title}
-            {cat_description}
-            {cat_image}
-            {cat_order}
+						 {cat_id}
+						 {category_id}
+						 {site_id
+						 {group_id}
+						 {parent_id}
+						 {cat_name}
+						 {category_name}
+						 {cat_url_title}
+						 {category_url_title}
+						 {cat_description}
+						 {category_description}
+						 {cat_image}
+						 {category_image}
+						 {cat_order}
+						 {category_order}
 					{/exp:gdcat:line}
 
 					<?php

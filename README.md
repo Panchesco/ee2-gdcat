@@ -42,14 +42,20 @@ Display category
 ```
 {exp:gdcat:line group_id="1" cat_url_title="category-url-title" image_man="thumbs"}
  {cat_id}
+ {category_id}
  {site_id
  {group_id}
  {parent_id}
  {cat_name}
+ {category_name}
  {cat_url_title}
+ {category_url_title}
  {cat_description}
+ {category_description}
  {cat_image}
+ {category_image}
  {cat_order}
+ {category_order}
 {/exp:gdcat:line}
 ```
 
@@ -60,20 +66,28 @@ Display category as parent-child heirarchy
 ```
 {exp:gdcat:line group_id="1" cat_url_title="category-url-title"}
  {cat_id}
+ {category_id}
  {site_id
  {group_id}
  {parent_id}
  {cat_name}
+ {category_name}
  {cat_url_title}
+ {category_url_title}
  {cat_description}
+ {category_description}
  {cat_image}
+ {category_image}
  {cat_order}
+ {category_order}
 {/exp:gdcat:line}
 ```
 
 
 ###Change Log
 
+1.4.0
+ - Added EE Channel Category variable names for output to templates. Example: {cat_id} or {category_id} will now display cat_id
 
 1.3.0
  - Added file directory URL parsing for cat_image
